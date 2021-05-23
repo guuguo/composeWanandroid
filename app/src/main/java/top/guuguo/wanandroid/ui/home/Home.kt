@@ -37,10 +37,12 @@ import top.guuguo.wanandroid.web.WebViewActivity
 
 @Composable
 fun Home() {
-    rememberSystemUiController().setSystemBarsColor(
-        color = Color.Transparent,
-        darkIcons = true
-    )
+    rememberSystemUiController().apply {
+        setSystemBarsColor(
+            color = Color.Transparent,
+            darkIcons = true
+        )
+    }
     val viewModel = viewModel(HomeViewModel::class.java)
     val viewState by viewModel.state.collectAsState()
     Log.d("composeDebug", viewState.articles.joinToString { it.toString() + "\n" })

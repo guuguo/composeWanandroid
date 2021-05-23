@@ -9,16 +9,18 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.google.accompanist.insets.LocalWindowInsets
+import com.google.accompanist.insets.toPaddingValues
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import top.guuguo.wanandroid.ui.home.Home
 import top.guuguo.wanandroid.R;
 import top.guuguo.wanandroid.ui.home.HomeViewModel
-
 
 
 @Composable
@@ -36,10 +38,12 @@ fun WanAndroidApp() {
 @Composable
 fun Tab() {
     val viewModel = viewModel(HomeViewModel::class.java)
-    val context = LocalContext.current
+    val insets = LocalWindowInsets.current
     Row(
+
         Modifier
             .fillMaxWidth()
+            .padding(insets.navigationBars.toPaddingValues())
             .height(Dp(70f)),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
@@ -58,7 +62,7 @@ fun PreviewTab() {
     Row(
         Modifier
             .fillMaxWidth()
-            .height(Dp(70f)),
+            .height(70.dp),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {

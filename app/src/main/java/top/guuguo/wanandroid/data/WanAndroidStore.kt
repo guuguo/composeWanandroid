@@ -33,7 +33,7 @@ class WanAndroidStore(
     }
 
     fun addData(newData: List<Article>,isEnd:Boolean) {
-        list.value = list.value.apply { addAll(newData) }
+        list.value = list.value.toMutableList().apply { addAll(newData) }
         loadingEnd.value=isEnd
     }
 
