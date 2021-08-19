@@ -90,6 +90,7 @@ dependencies {
     implementation Libs.AndroidX.Room.ktx
 
     implementation Libs.Gson.gson
+    implementation Libs.UtilCode.util
 
     kapt Libs.AndroidX.Room.compiler
 

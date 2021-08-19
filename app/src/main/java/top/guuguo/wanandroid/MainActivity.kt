@@ -6,6 +6,7 @@ import androidx.activity.compose.setContent
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.core.view.WindowCompat
+import com.blankj.utilcode.util.NetworkUtils
 import com.google.accompanist.insets.ProvideWindowInsets
 import top.guuguo.wanandroid.ui.WanAndroidApp
 import top.guuguo.wanandroid.ui.theme.WanAndroidTheme

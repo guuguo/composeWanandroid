@@ -18,20 +18,21 @@ package top.guuguo.wanandroid.ui.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.blankj.utilcode.util.NetworkUtils
 import com.example.jetcaster.data.PodcastsRepository
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.async
-import kotlinx.coroutines.delay
+import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.launch
 import top.guuguo.wanandroid.Graph
 import top.guuguo.wanandroid.data.WanAndroidStore
 import top.guuguo.wanandroid.data.bean.article.Article
 import top.guuguo.wanandroid.data.bean.banner.BannerBean
+import top.guuguo.wanandroid.data.internal.PageContent
+import top.guuguo.wanandroid.data.internal.PageError
+import top.guuguo.wanandroid.data.internal.PageState
 
 class HomeViewModel(
     private val podcastsRepository: PodcastsRepository = Graph.wanRepository,
@@ -44,6 +45,21 @@ class HomeViewModel(
     private val refreshing = MutableStateFlow(true)
 
     val state: StateFlow<HomeViewState> get() = _state
+    val pageState: MutableStateFlow<PageState> = MutableStateFlow(PageContent)
+
+    init {
+        viewModelScope.launch(Dispatchers.IO) {
+            NetworkUtils.isAvailable().let {
+                withContext(Dispatchers.Main) {
+                    if (it) {
+                        pageState.value = PageContent
+                    } else {
+                        pageState.value = PageError(Throwable("网络不通~"))
+                    }
+                }
+            }
+        }
+    }
 
     init {
         viewModelScope.launch {

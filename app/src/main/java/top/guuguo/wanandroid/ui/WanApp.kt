@@ -9,6 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.layoutId
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
@@ -22,18 +23,45 @@ import com.google.accompanist.insets.toPaddingValues
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import top.guuguo.wanandroid.ui.home.Home
 import top.guuguo.wanandroid.R;
+import top.guuguo.wanandroid.data.internal.PageContent
+import top.guuguo.wanandroid.data.internal.PageError
+import top.guuguo.wanandroid.data.internal.PageState
 import top.guuguo.wanandroid.ui.home.HomeViewModel
 
 
 @Composable
 //@Preview(showBackground = true)
 fun WanAndroidApp() {
+    val viewModel = viewModel(HomeViewModel::class.java)
+
     Column(modifier = Modifier.fillMaxSize()) {
-        Box(modifier = Modifier.weight(1f)) {
-            Home()
+        if (viewModel.pageState.value == PageContent) {
+            Box(modifier = Modifier.weight(1f)) {
+                Home()
+            }
+            Divider(Modifier.height(0.3.dp), color = Color.LightGray)
+            Tab()
+        } else {
+            ErrorPage(error = viewModel.pageState)
         }
-        Divider(Modifier.height(0.3.dp), color = Color.LightGray)
-        Tab()
+    }
+}
+
+@Composable
+fun ErrorPage(error: PageError) {
+    Box(modifier = Modifier.fillMaxSize()) {
+        Text(
+            modifier = Modifier.align(Alignment.Center),
+            text = error.error.message ?: "出错了"
+        )
+    }
+}
+
+@Preview
+@Composable
+fun PreviewError() {
+    MaterialTheme(colors = darkColors()) {
+        ErrorPage(PageError(Throwable("网络出错了")))
     }
 }
 

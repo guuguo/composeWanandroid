@@ -51,6 +51,10 @@ object Libs {
         const val okhttp = "com.squareup.okhttp3:okhttp:$version"
         const val logging = "com.squareup.okhttp3:logging-interceptor:$version"
     }
+    object UtilCode{
+        private const val version = "1.30.6"
+        const val util = "com.blankj:utilcodex:$version"
+    }
 
     object JUnit {
         private const val version = "4.13"
