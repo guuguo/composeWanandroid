@@ -71,6 +71,10 @@ object Libs {
             const val constraintLayoutCompose =
                 "androidx.constraintlayout:constraintlayout-compose:1.0.0-alpha05"
         }
+        object Leanback{
+            const val version = "1.1.0-alpha01"
+            const val tab= "androidx.leanback:leanback-tab:$version"
+        }
 
         object Compose {
             const val snapshot = ""

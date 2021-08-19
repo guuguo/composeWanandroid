@@ -10,7 +10,7 @@ android {
     compileSdkVersion 30
 
     defaultConfig {
-        applicationId "top.guuguo.wanandroid"
+        applicationId "top.guuguo.wanandroid.tv"
         minSdkVersion 21
         targetSdkVersion 30
         versionCode 1
@@ -27,8 +27,6 @@ android {
     }
     compileOptions {
         // Flag to enable support for the new language APIs
-        coreLibraryDesugaringEnabled true
-
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
@@ -37,13 +35,8 @@ android {
         useIR = true
     }
     buildFeatures {
-        compose true
     }
-    composeOptions {
-        kotlinCompilerVersion '1.4.30'
-        kotlinCompilerExtensionVersion Libs.AndroidX.Compose.version
 
-    }
     packagingOptions {
         // The Rome library JARs embed some internal utils libraries in nested JARs.
         // We don't need them so we exclude them in the final package.
@@ -62,36 +55,7 @@ dependencies {
     implementation Libs.AndroidX.coreKtx
     implementation Libs.AndroidX.palette
 
-    implementation Libs.AndroidX.Activity.activityCompose
-    implementation Libs.AndroidX.Constraint.constraintLayoutCompose
-
-    implementation Libs.AndroidX.Compose.foundation
-    implementation Libs.AndroidX.Compose.material
-    implementation Libs.AndroidX.Compose.materialIconsExtended
-    implementation Libs.AndroidX.Compose.tooling
-
     implementation Libs.AndroidX.Lifecycle.viewmodel
-    implementation Libs.AndroidX.Lifecycle.viewModelCompose
-
-    implementation Libs.Accompanist.coil
-    implementation Libs.Accompanist.pager
-    implementation Libs.Accompanist.insets
-    implementation Libs.Accompanist.systemui
-
-
-    implementation Libs.OkHttp.okhttp
-    implementation Libs.OkHttp.logging
-
-
-    implementation Libs.Rome.rome
-    implementation Libs.Rome.modules
-
-    implementation Libs.AndroidX.Room.runtime
-    implementation Libs.AndroidX.Room.ktx
 
     implementation Libs.Gson.gson
-
-    kapt Libs.AndroidX.Room.compiler
-
-    coreLibraryDesugaring Libs.jdkDesugar
 }
