@@ -1,5 +1,7 @@
 package top.guuguo.wanandroid.ui.home
 
+import android.content.res.Configuration.UI_MODE_NIGHT_MASK
+import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -37,10 +39,12 @@ import top.guuguo.wanandroid.web.WebViewActivity
 
 @Composable
 fun Home() {
-    rememberSystemUiController().setSystemBarsColor(
-        color = Color.Transparent,
-        darkIcons = true
-    )
+    rememberSystemUiController().apply {
+        setSystemBarsColor(
+            color = Color.Transparent,
+            darkIcons = true
+        )
+    }
     val viewModel = viewModel(HomeViewModel::class.java)
     val viewState by viewModel.state.collectAsState()
     Log.d("composeDebug", viewState.articles.joinToString { it.toString() + "\n" })
@@ -115,7 +119,6 @@ fun HomeBanner(banners: List<BannerBean>) {
 @Composable
 fun ArticleItem(article: Article) {
     val context = LocalContext.current
-
     Box(
         Modifier
             .padding(20.dp, 10.dp)
@@ -163,16 +166,21 @@ fun LoadingView(loadEnd: Boolean) {
 }
 
 @Composable
-//@Preview("主页")
+@Preview(
+    "主页",
+    uiMode = UI_MODE_NIGHT_YES
+)
 fun PreviewPage() {
-    val list = (0..10).map { i -> fakeJson.fromJson<Article>().also { it.id = it.id + i } }
-    HomeList(
-        articles = list,
-        banners = listOf(),
-        modifier = Modifier.fillMaxSize(),
-        loadEnd = true
-    ) {
+    MaterialTheme(colors = darkColors()  ) {
+        val list = (0..2).map { i -> fakeJson.fromJson<Article>().also { it.id = it.id + i } }
+        HomeList(
+            articles = list,
+            banners = listOf(),
+            modifier = Modifier.fillMaxSize(),
+            loadEnd = true
+        ) {
 
+        }
     }
 }
 

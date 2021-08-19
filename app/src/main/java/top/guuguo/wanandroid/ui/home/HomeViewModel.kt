@@ -94,10 +94,8 @@ class HomeViewModel(
     fun load() {
         if (loadingJob?.isActive != true) {
             loadingJob = viewModelScope.launch {
-                async {
-                    runCatching {
-                        podcastsRepository.loadArticles()
-                    }
+                runCatching {
+                    podcastsRepository.loadArticles()
                 }
             }
         }
