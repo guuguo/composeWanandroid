@@ -1,6 +1,5 @@
 package top.guuguo.wanandroid.ui.home
 
-import android.content.res.Configuration.UI_MODE_NIGHT_MASK
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import android.util.Log
 import androidx.compose.foundation.Image
@@ -35,6 +34,8 @@ import top.guuguo.wanandroid.data.bean.banner.BannerBean
 import top.guuguo.wanandroid.ext.fromJson
 import top.guuguo.wanandroid.test.fakeBannerJson
 import top.guuguo.wanandroid.test.fakeJson
+import top.guuguo.wanandroid.ui.common.LoadMoreView
+import top.guuguo.wanandroid.ui.common.RefreshingView
 import top.guuguo.wanandroid.web.WebViewActivity
 
 @Composable
@@ -82,7 +83,7 @@ private fun HomeList(modifier: Modifier, loadEnd: Boolean, banners: List<BannerB
             }
             ArticleItem(it)
         }
-        item { LoadingView(loadEnd) }
+        item { LoadMoreView(loadEnd) }
     }
 }
 
@@ -141,29 +142,7 @@ fun ArticleItem(article: Article) {
 
 }
 
-@Composable
-fun RefreshingView() {
-    Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-        CircularProgressIndicator()
-    }
-}
 
-@Composable
-fun LoadingView(loadEnd: Boolean) {
-
-    Box(
-        Modifier
-            .fillMaxWidth()
-            .padding(vertical = 5.dp), contentAlignment = Alignment.Center
-    ) {
-
-        if (loadEnd) {
-            Text("---------   底线   ---------")
-        } else {
-            CircularProgressIndicator(Modifier.size(25.dp))
-        }
-    }
-}
 
 @Composable
 @Preview(

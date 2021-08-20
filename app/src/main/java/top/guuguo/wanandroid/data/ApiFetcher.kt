@@ -52,7 +52,7 @@ class ApiFetcher(
      * network responses (up to 8 hours).
      */
     private val cacheControl by lazy {
-        CacheControl.Builder().maxStale(8, TimeUnit.HOURS).build()
+        CacheControl.Builder().maxStale(1, TimeUnit.SECONDS).build()
     }
 
     /**

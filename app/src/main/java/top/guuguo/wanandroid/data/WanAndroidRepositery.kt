@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.example.jetcaster.data
+package top.guuguo.wanandroid.data
 
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
@@ -40,29 +40,36 @@ class PodcastsRepository(
 
     suspend fun loadArticles() {
         page++
-        // Now fetch the podcasts, and add each to each store
         wanFetcher(page)
-            .filter { it is HomeArticleResponse.Success }
-            .map { it as HomeArticleResponse.Success }
-            .collect { (resData) ->
-                wanStore.addData(resData.data.datas,resData.data.curPage>=resData.data.pageCount)
+            .collect {
+                when (it) {
+                    is HomeArticleResponse.Success ->
+                        wanStore.addData(it.resData.data.datas, it.resData.data.curPage >= it.resData.data.pageCount)
+                    is HomeArticleResponse.Error -> throw it.throwable?: Throwable()
+                }
             }
     }
 
     suspend fun refresh() {
         page = 0
         wanFetcher(page)
-            .filter { it is HomeArticleResponse.Success }
-            .map { it as HomeArticleResponse.Success }
-            .collect { (resData) ->
-                wanStore.refreshData(resData.data.datas)
+            .collect {
+                when (it) {
+                    is HomeArticleResponse.Success ->
+                        wanStore.addData(it.resData.data.datas, it.resData.data.curPage >= it.resData.data.pageCount)
+                    is HomeArticleResponse.Error -> throw it.throwable?: Throwable()
+                }
             }
+
         wanFetcher.banner()
-            .filter { it is BannerResponse.Success }
-            .map { it as BannerResponse.Success }
-            .collect { (resData) ->
-                wanStore.refreshBanner(resData.data)
+            .collect {
+                when (it) {
+                    is BannerResponse.Success ->
+                        wanStore.refreshBanner(it.banner.data)
+                    is BannerResponse.Error -> throw it.throwable?: Throwable()
+                }
             }
+
     }
 
 

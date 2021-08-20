@@ -1,20 +1,17 @@
 package top.guuguo.wanandroid.ui
 
-import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.layoutId
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -26,6 +23,7 @@ import top.guuguo.wanandroid.R;
 import top.guuguo.wanandroid.data.internal.PageContent
 import top.guuguo.wanandroid.data.internal.PageError
 import top.guuguo.wanandroid.data.internal.PageState
+import top.guuguo.wanandroid.ui.common.ErrorPage
 import top.guuguo.wanandroid.ui.home.HomeViewModel
 
 
@@ -35,35 +33,24 @@ fun WanAndroidApp() {
     val viewModel = viewModel(HomeViewModel::class.java)
 
     Column(modifier = Modifier.fillMaxSize()) {
-        if (viewModel.pageState.value == PageContent) {
-            Box(modifier = Modifier.weight(1f)) {
-                Home()
+        val pageState by viewModel.pageState.collectAsState()
+        when (pageState) {
+            PageContent -> {
+                Box(modifier = Modifier.weight(1f)) {
+                    Home()
+                }
+                Divider(Modifier.height(0.3.dp), color = Color.LightGray)
+                Tab()
             }
-            Divider(Modifier.height(0.3.dp), color = Color.LightGray)
-            Tab()
-        } else {
-            ErrorPage(error = viewModel.pageState)
+            is PageError -> {
+                ErrorPage(error = pageState as PageError, retry = viewModel::refresh)
+            }
+            else -> {
+            }
         }
     }
 }
 
-@Composable
-fun ErrorPage(error: PageError) {
-    Box(modifier = Modifier.fillMaxSize()) {
-        Text(
-            modifier = Modifier.align(Alignment.Center),
-            text = error.error.message ?: "出错了"
-        )
-    }
-}
-
-@Preview
-@Composable
-fun PreviewError() {
-    MaterialTheme(colors = darkColors()) {
-        ErrorPage(PageError(Throwable("网络出错了")))
-    }
-}
 
 @Composable
 fun Tab() {

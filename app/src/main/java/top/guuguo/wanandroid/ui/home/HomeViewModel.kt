@@ -18,8 +18,7 @@ package top.guuguo.wanandroid.ui.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.blankj.utilcode.util.NetworkUtils
-import com.example.jetcaster.data.PodcastsRepository
+import top.guuguo.wanandroid.data.PodcastsRepository
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -48,20 +47,7 @@ class HomeViewModel(
     val pageState: MutableStateFlow<PageState> = MutableStateFlow(PageContent)
 
     init {
-        viewModelScope.launch(Dispatchers.IO) {
-            NetworkUtils.isAvailable().let {
-                withContext(Dispatchers.Main) {
-                    if (it) {
-                        pageState.value = PageContent
-                    } else {
-                        pageState.value = PageError(Throwable("网络不通~"))
-                    }
-                }
-            }
-        }
-    }
-
-    init {
+//        checkNetAvaliable()
         viewModelScope.launch {
             // Combines the latest value from each of the flows, allowing us to generate a
             // view state instance which only contains the latest values.
@@ -88,19 +74,36 @@ class HomeViewModel(
         refresh()
     }
 
+//    fun checkNetAvaliable() {
+//        viewModelScope.launch(Dispatchers.IO) {
+//            NetworkUtils.isAvailable().let {
+//                withContext(Dispatchers.Main) {
+//                    if (it) {
+//                        pageState.value = PageContent
+//                    } else {
+//                        pageState.value = PageError(Throwable("网络不通~"))
+//                    }
+//                }
+//            }
+//        }
+//    }
+
     var refreshingJob: Job? = null
     fun refresh() {
         if (refreshingJob?.isActive != true) {
             refreshingJob = viewModelScope.launch {
                 val d1 = async {
+                    refreshing.value = true
                     runCatching {
-                        refreshing.value = true
                         podcastsRepository.refresh()
+                    }.onFailure {
+                        pageState.value = PageError(it)
                     }
                 }
                 val d2 = async { delay(1000) }
                 d1.await()
                 d2.await()
+
                 refreshing.value = false
             }
         }
@@ -112,6 +115,8 @@ class HomeViewModel(
             loadingJob = viewModelScope.launch {
                 runCatching {
                     podcastsRepository.loadArticles()
+                }.onFailure {
+                    pageState.value = PageError(it)
                 }
             }
         }
