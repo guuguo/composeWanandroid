@@ -1,31 +1,56 @@
 package top.guuguo.wanandroid
 
 import android.content.Context
-import top.guuguo.wanandroid.data.PodcastsRepository
+import top.guuguo.wanandroid.data.wanandroid.WanAndroidsRepository
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import okhttp3.Cache
 import okhttp3.OkHttpClient
 import okhttp3.logging.LoggingEventListener
-import top.guuguo.wanandroid.data.ApiFetcher
-import top.guuguo.wanandroid.data.WanAndroidStore
+import top.guuguo.wanandroid.data.bilibili.BiliApiFetcher
+import top.guuguo.wanandroid.data.bilibili.BiliRepository
+import top.guuguo.wanandroid.data.bilibili.BiliStore
+import top.guuguo.wanandroid.data.wanandroid.WanAndroidStore
+import top.guuguo.wanandroid.data.wanandroid.WanApiFetcher
 import java.io.File
 
 object Graph {
     lateinit var okHttpClient: OkHttpClient
     val wanRepository by lazy {
-        PodcastsRepository(
+        WanAndroidsRepository(
             wanFetcher = wanFetcher,
             wanStore = podcastStore,
             mainDispatcher = mainDispatcher
         )
     }
     private val wanFetcher by lazy {
-        ApiFetcher(
+        WanApiFetcher(
             okHttpClient = okHttpClient,
             ioDispatcher = ioDispatcher
         )
     }
+
+    ///bili
+    val biliStore by lazy {
+        BiliStore( )
+    }
+    private val biliFetcher by lazy {
+        BiliApiFetcher(
+            okHttpClient = okHttpClient,
+            ioDispatcher = ioDispatcher
+        )
+    }
+    val biliRepository by lazy {
+        BiliRepository(
+            fetcher = biliFetcher,
+            store = biliStore,
+            mainDispatcher = mainDispatcher
+        )
+    }
+
+
+
+
     private val mainDispatcher: CoroutineDispatcher
         get() = Dispatchers.Main
 

@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-package top.guuguo.wanandroid.ui.home
+package top.guuguo.wanandroid.ui.wanhome
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import top.guuguo.wanandroid.data.PodcastsRepository
+import top.guuguo.wanandroid.data.wanandroid.WanAndroidsRepository
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -26,15 +26,15 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.combine
 import top.guuguo.wanandroid.Graph
-import top.guuguo.wanandroid.data.WanAndroidStore
-import top.guuguo.wanandroid.data.bean.article.Article
-import top.guuguo.wanandroid.data.bean.banner.BannerBean
+import top.guuguo.wanandroid.data.wanandroid.WanAndroidStore
+import top.guuguo.wanandroid.data.wanandroid.bean.article.Article
+import top.guuguo.wanandroid.data.wanandroid.bean.banner.BannerBean
 import top.guuguo.wanandroid.data.internal.PageContent
 import top.guuguo.wanandroid.data.internal.PageError
 import top.guuguo.wanandroid.data.internal.PageState
 
 class HomeViewModel(
-    private val podcastsRepository: PodcastsRepository = Graph.wanRepository,
+    private val wanAndroidsRepository: WanAndroidsRepository = Graph.wanRepository,
     private val podcastStore: WanAndroidStore = Graph.podcastStore
 ) : ViewModel() {
 
@@ -95,7 +95,7 @@ class HomeViewModel(
                 val d1 = async {
                     refreshing.value = true
                     runCatching {
-                        podcastsRepository.refresh()
+                        wanAndroidsRepository.refresh()
                     }.onFailure {
                         pageState.value = PageError(it)
                     }
@@ -114,7 +114,7 @@ class HomeViewModel(
         if (loadingJob?.isActive != true) {
             loadingJob = viewModelScope.launch {
                 runCatching {
-                    podcastsRepository.loadArticles()
+                    wanAndroidsRepository.loadArticles()
                 }.onFailure {
                     pageState.value = PageError(it)
                 }

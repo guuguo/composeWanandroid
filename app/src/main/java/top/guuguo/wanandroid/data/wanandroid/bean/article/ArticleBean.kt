@@ -1,4 +1,4 @@
-package top.guuguo.wanandroid.data.bean.article
+package top.guuguo.wanandroid.data.wanandroid.bean.article
 
 
 data class Article(

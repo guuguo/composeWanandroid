@@ -1,4 +1,4 @@
-package top.guuguo.wanandroid.data.bean.banner
+package top.guuguo.wanandroid.data.wanandroid.bean.banner
 
 data class BannerBean(
     val desc: String,

@@ -14,17 +14,16 @@
  * limitations under the License.
  */
 
-package top.guuguo.wanandroid.data
+package top.guuguo.wanandroid.data.wanandroid
 
 import kotlinx.coroutines.flow.MutableStateFlow
-import top.guuguo.wanandroid.data.bean.article.Article
-import top.guuguo.wanandroid.data.bean.banner.BannerBean
+import top.guuguo.wanandroid.data.wanandroid.bean.article.Article
+import top.guuguo.wanandroid.data.wanandroid.bean.banner.BannerBean
 
 /**
  * A data repository for [Category] instances.
  */
-class WanAndroidStore(
-) {
+class WanAndroidStore() {
     val list = MutableStateFlow<MutableList<Article>>(mutableListOf())
     val bannerList = MutableStateFlow<MutableList<BannerBean>>(mutableListOf())
     val loadingEnd = MutableStateFlow(false)

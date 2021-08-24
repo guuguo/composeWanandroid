@@ -14,25 +14,13 @@
  * limitations under the License.
  */
 
-package top.guuguo.wanandroid.data
+package top.guuguo.wanandroid.data.wanandroid
 
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.filter
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.launch
-import top.guuguo.wanandroid.data.ApiFetcher
-import top.guuguo.wanandroid.data.BannerResponse
-import top.guuguo.wanandroid.data.HomeArticleResponse
-import top.guuguo.wanandroid.data.WanAndroidStore
 
-/**
- * Data repository for Podcasts.
- */
-class PodcastsRepository(
-    private val wanFetcher: ApiFetcher,
+class WanAndroidsRepository(
+    private val wanFetcher: WanApiFetcher,
     private val wanStore: WanAndroidStore,
     mainDispatcher: CoroutineDispatcher
 ) {

@@ -1,4 +1,4 @@
-package top.guuguo.wanandroid.data.bean
+package top.guuguo.wanandroid.data.wanandroid.bean
 
 data class WanListBean<T>(
     val curPage: Int,

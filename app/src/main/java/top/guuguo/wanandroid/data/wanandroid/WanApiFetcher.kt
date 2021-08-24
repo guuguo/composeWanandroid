@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package top.guuguo.wanandroid.data
+package top.guuguo.wanandroid.data.wanandroid
 
 import coil.network.HttpException
 import com.rometools.rome.io.SyndFeedInput
@@ -26,10 +26,11 @@ import kotlinx.coroutines.withContext
 import okhttp3.CacheControl
 import okhttp3.OkHttpClient
 import okhttp3.Request
-import top.guuguo.wanandroid.data.bean.WanListBean
-import top.guuguo.wanandroid.data.bean.article.Article
-import top.guuguo.wanandroid.data.bean.WanResBean
-import top.guuguo.wanandroid.data.bean.banner.BannerBean
+import top.guuguo.wanandroid.data.await
+import top.guuguo.wanandroid.data.wanandroid.bean.WanListBean
+import top.guuguo.wanandroid.data.wanandroid.bean.article.Article
+import top.guuguo.wanandroid.data.wanandroid.bean.WanResBean
+import top.guuguo.wanandroid.data.wanandroid.bean.banner.BannerBean
 import top.guuguo.wanandroid.ext.fromJson
 import java.util.concurrent.TimeUnit
 
@@ -40,7 +41,7 @@ import java.util.concurrent.TimeUnit
  * @param syndFeedInput [SyndFeedInput] to use for parsing RSS feeds.
  * @param ioDispatcher [CoroutineDispatcher] to use for running fetch requests.
  */
-class ApiFetcher(
+class WanApiFetcher(
     private val okHttpClient: OkHttpClient,
 //    private val syndFeedInput: SyndFeedInput,
     private val ioDispatcher: CoroutineDispatcher
