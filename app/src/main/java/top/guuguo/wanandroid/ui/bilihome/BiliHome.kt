@@ -1,17 +1,11 @@
 package top.guuguo.wanandroid.ui.bilihome
 
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
-import androidx.compose.material.darkColors
 import androidx.compose.material.lightColors
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -31,9 +25,8 @@ import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import top.guuguo.wanandroid.data.bilibili.bean.VideoBean
 import top.guuguo.wanandroid.ext.fromJson
 import top.guuguo.wanandroid.test.fakeBiliHomeJson
-import top.guuguo.wanandroid.test.fakeJson
 import top.guuguo.wanandroid.ui.common.StateView
-import top.guuguo.wanandroid.web.WebViewActivity
+import top.guuguo.wanandroid.ui.common.VerticalGrid
 
 @Composable
 fun BiliHome() {
@@ -47,19 +40,18 @@ fun BiliHome() {
     val pageState by viewModel.store.pageState.collectAsState()
     StateView(pageState) {
         viewModel.store.homeBean.value?.latest?.let {
-            HomeList(Modifier.fillMaxSize(), it)
+            HomeList(it)
         }
     }
 }
 
 
 @Composable
-private fun HomeList(modifier: Modifier, videos: List<VideoBean>) {
-
-    LazyColumn(modifier, horizontalAlignment = Alignment.CenterHorizontally) {
-        itemsIndexed(items = videos, key = { i, it -> it.season_id + i }, itemContent = {i,it->
+private fun HomeList(videos: List<VideoBean>) {
+    VerticalGrid(Modifier.verticalScroll(rememberScrollState()),2) {
+        videos.forEach {
             ArticleItem(it)
-        })
+        }
     }
 }
 
@@ -75,23 +67,25 @@ fun ArticleItem(video: VideoBean) {
             )
             .fillMaxWidth()
             .clip(RoundedCornerShape(15.dp))
+            .wrapContentHeight()
             .clickable {}
             .padding(20.dp),
         contentAlignment = Alignment.CenterStart,
     ) {
-        Column {
+        Column(horizontalAlignment=Alignment.Start) {
             Image(
                 painter = rememberCoilPainter(video.cover, fadeIn = true),
                 contentDescription = null,
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
-                    .fillMaxSize()
-                    .padding(20.dp, 10.dp)
+                    .height(50.dp)
+                    .width(50.dp)
                     .background(Color.Gray, shape = RoundedCornerShape(15.dp))
                     .shadow(4.dp, shape = RoundedCornerShape(15.dp))
                     .clickable {
                     }
             )
+            Spacer(modifier = Modifier.height(10.dp))
             Text(text = video.pub_index, style = MaterialTheme.typography.caption)
             Spacer(modifier = Modifier.height(5.dp))
             Text(text = video.title)
@@ -110,7 +104,6 @@ fun PreviewPage() {
     MaterialTheme(colors = lightColors()) {
         val list = fakeBiliHomeJson.fromJson<List<VideoBean>>()
         HomeList(
-            modifier = Modifier.fillMaxSize(),
             videos = list
         )
     }
